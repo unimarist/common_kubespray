@@ -1,0 +1,26 @@
+all:
+  hosts:
+    controlplane:
+      ansible_host: $controlplane_private_ip
+      ip: $controlplane_private_ip
+      access_ip: $controlplane_private_ip
+    workernode:
+      ansible_host: $workernode_private_ip
+      ip: $workernode_private_ip
+      access_ip: $workernode_private_ip
+  children:
+    kube_control_plane:
+      hosts:
+        controlplane:
+    kube_node:
+      hosts:
+        workernode:
+    etcd:
+      hosts:
+        controlplane:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
+    calico_rr:
+      hosts: {}
